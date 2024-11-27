@@ -8,6 +8,8 @@ import ImPropTypes from "react-immutable-proptypes"
 
 import RollingLoadSVG from "core/assets/rolling-load.svg"
 
+import GeneratedTests from "./generated-test"
+
 export default class Operation extends PureComponent {
   static propTypes = {
     specPath: ImPropTypes.list.isRequired,
@@ -42,6 +44,100 @@ export default class Operation extends PureComponent {
     specPath: List(),
     summary: ""
   }
+
+    state = {
+        generatedTests: [],
+        isTestStreamActive: false,
+        isGeneratingTest: false,
+    }
+
+    handleGenerateTest = async (path, method) => {
+        const { specSelectors } = this.props;
+
+        const requestDetails = specSelectors.requestFor(path, method);
+        let operationProps = this.props.operation;
+        let { summary } = operationProps.toJS();
+
+        if (!requestDetails) {
+            alert("Please execute the API first to generate tests.");
+            return;
+        }
+        
+        let payload = {};
+        if (requestDetails instanceof Object) {
+            payload = Object.fromEntries(requestDetails);
+        } else {
+            payload = { ...requestDetails };
+        }
+
+        if (payload.body) {
+            try {
+                payload.json_body = JSON.parse(payload.body);
+            } catch (error) {
+                console.warn("Body is not valid JSON. Leaving as-is.");
+            }
+        }
+
+        // fixes map to object (like headers)
+        payload = JSON.parse(JSON.stringify(payload));
+
+        this.setState({
+            isGeneratingTest: true,
+            isTestStreamActive: true,
+            generatedTests: [] 
+        });
+        
+        try {
+            const response = await fetch(`https://be.kusho.ai/apisorcery/generate/streaming`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-KUSHO-SOURCE": "swagger",
+                },
+                body: JSON.stringify({
+                    machine_id: "swagger_ui", // Replace with the actual machine ID or login details
+                    api_info: payload,
+                    test_suite_name: summary, // section - api summary
+                }),
+            });
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+
+            while (true) {
+                const { done, value } = await reader.read();
+
+                if (done)
+                    break;
+
+                let chunk = decoder.decode(value);
+                
+                if (chunk === "[DONE]")
+                    break;
+
+                chunk = chunk.replace("event:test_case\ndata:", "").replace("\n\n", "");
+                try{
+                    this.setState((prevState) => ({
+                        generatedTests: [...prevState.generatedTests, JSON.parse(chunk)],
+                    }));
+                }catch (error) {
+                    console.warn("Chunk not valid json - ", chunk);
+                }
+            }
+
+            this.setState({ 
+                isTestStreamActive: false,
+                isGeneratingTest: false 
+            });
+        } catch (error) {
+            console.error('Test generation error:', error);
+            this.setState({ 
+                isTestStreamActive: false,
+                isGeneratingTest: false,
+                generatedTests: [`Error generating tests: ${error.message}`]
+            });
+        }
+    }
 
   render() {
     let {
@@ -117,9 +213,21 @@ export default class Operation extends PureComponent {
 
     const validationErrors = specSelectors.validationErrors([path, method])
 
+    const { generatedTests, isTestStreamActive, isGeneratingTest } = this.state;
+
     return (
         <div className={deprecated ? "opblock opblock-deprecated" : isShown ? `opblock opblock-${method} is-open` : `opblock opblock-${method}`} id={escapeDeepLinkPath(isShownKey.join("-"))} >
-          <OperationSummary operationProps={operationProps} isShown={isShown} toggleShown={toggleShown} getComponent={getComponent} authActions={authActions} authSelectors={authSelectors} specPath={specPath} />
+            <OperationSummary 
+                operationProps={operationProps} 
+                isShown={isShown} 
+                toggleShown={toggleShown} 
+                getComponent={getComponent} 
+                authActions={authActions} 
+                authSelectors={authSelectors} 
+                specPath={specPath} 
+                onGenerateTest={this.handleGenerateTest}
+                isGeneratingTest={isGeneratingTest}
+            />
           <Collapse isOpened={isShown}>
             <div className="opblock-body">
               { (operation && operation.size) || operation === null ? null :
@@ -251,6 +359,13 @@ export default class Operation extends PureComponent {
               { !showExtensions || !extensions.size ? null :
                 <OperationExt extensions={ extensions } getComponent={ getComponent } />
               }
+
+                <GeneratedTests
+                    getComponent={ getComponent }
+                    generatedTests={generatedTests}
+                    isTestStreamActive={isTestStreamActive}
+                />
+
             </div>
           </Collapse>
         </div>

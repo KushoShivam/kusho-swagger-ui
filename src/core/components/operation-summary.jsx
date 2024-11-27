@@ -16,6 +16,8 @@ export default class OperationSummary extends PureComponent {
     getConfigs: PropTypes.func.isRequired,
     authActions: PropTypes.object,
     authSelectors: PropTypes.object,
+    onGenerateTest: PropTypes.func,
+    isGeneratingTest: PropTypes.bool,
   }
 
   static defaultProps = {
@@ -34,6 +36,8 @@ export default class OperationSummary extends PureComponent {
       authSelectors,
       operationProps,
       specPath,
+      onGenerateTest,
+      isGeneratingTest,
     } = this.props
 
     let {
@@ -97,6 +101,20 @@ export default class OperationSummary extends PureComponent {
             />
         }
         <JumpToPath path={specPath} />{/* TODO: use wrapComponents here, swagger-ui doesn't care about jumpToPath */}
+        {/* <button onClick={this.handleGenerateTest} >Generate Test</button> */}
+        {onGenerateTest && (
+            <button
+                className={`opblock-generate-test-btn ${isGeneratingTest ? 'is-loading' : ''}`}
+                onClick={(e) => {
+                    e.stopPropagation(); // Prevent toggling operation visibility
+                    onGenerateTest(path, method);
+                }}
+                disabled={isGeneratingTest}
+                title="Generate Test"
+            >
+                {isGeneratingTest ? 'Generating...' : 'Generate Test'}
+            </button>
+        )}
         <button
           aria-label={`${method} ${path.replace(/\//g, "\u200b/")}`}
           className="opblock-control-arrow"
