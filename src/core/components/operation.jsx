@@ -88,7 +88,7 @@ export default class Operation extends PureComponent {
         });
         
         try {
-            const response = await fetch(`https://be.kusho.ai/apisorcery/generate/streaming`, {
+            const response = await fetch(`https://staging-be.kusho.ai/vscode/generate/streaming`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
