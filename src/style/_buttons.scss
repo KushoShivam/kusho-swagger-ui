@@ -224,3 +224,50 @@ button
   height: 26px;
   position: unset;
 }
+
+.opblock-generate-test-btn {
+  position: relative;
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: #45a049;
+  }
+
+  &.is-loading {
+    background-color: #9E9E9E; /* Grey background */
+    color: #E0E0E0; /* Lighter text color */
+    opacity: 0.7;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &.is-loading::after {
+    content: '';
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #E0E0E0;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  &.is-loading:hover {
+    background-color: #9E9E9E; /* Maintain grey background on hover */
+  }
+}
+
+@keyframes spin {
+  0% { transform: translateY(-50%) rotate(0deg); }
+  100% { transform: translateY(-50%) rotate(360deg); }
+}
