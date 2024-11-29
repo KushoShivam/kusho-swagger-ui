@@ -117,8 +117,12 @@ export default class Operation extends PureComponent {
 
                 chunk = chunk.replace("event:test_case\ndata:", "").replace("\n\n", "");
                 try{
+                    chunk = JSON.parse(JSON.stringify(chunk));
+                    if (typeof chunk === "string") {
+                      chunk = JSON.parse(chunk);
+                    }
                     this.setState((prevState) => ({
-                        generatedTests: [...prevState.generatedTests, JSON.parse(JSON.stringify(chunk))],
+                        generatedTests: [...prevState.generatedTests, chunk],
                     }));
                 }catch (error) {
                     console.warn("Chunk not valid json - ", chunk);

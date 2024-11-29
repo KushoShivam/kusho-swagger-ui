@@ -1,34 +1,10 @@
-# <img src="https://raw.githubusercontent.com/swagger-api/swagger.io/wordpress/images/assets/SWU-logo-clr.png" width="300">
+# API Sorcery
 
-[![NPM version](https://badge.fury.io/js/swagger-ui.svg)](http://badge.fury.io/js/swagger-ui)
-[![Build Status](https://jenkins.swagger.io/view/OSS%20-%20JavaScript/job/oss-swagger-ui-master/badge/icon?subject=jenkins%20build)](https://jenkins.swagger.io/view/OSS%20-%20JavaScript/job/oss-swagger-ui-master/)
-[![npm audit](https://jenkins.swagger.io/buildStatus/icon?job=oss-swagger-ui-security-audit&subject=npm%20audit)](https://jenkins.swagger.io/job/oss-swagger-ui-security-audit/lastBuild/console)
-![total GitHub contributors](https://img.shields.io/github/contributors-anon/swagger-api/swagger-ui.svg)
-
-![monthly npm installs](https://img.shields.io/npm/dm/swagger-ui.svg?label=npm%20downloads)
-![total docker pulls](https://img.shields.io/docker/pulls/swaggerapi/swagger-ui.svg)
-![monthly packagist installs](https://img.shields.io/packagist/dm/swagger-api/swagger-ui.svg?label=packagist%20installs)
-![gzip size](https://img.shields.io/bundlephobia/minzip/swagger-ui.svg?label=gzip%20size)
+API Sorcery is an integrated API testing tool built using Kusho in Swagger. It allows you to easily test and interact with your APIs directly within the Swagger UI interface.
 
 ## Introduction
-[Swagger UI](https://swagger.io/tools/swagger-ui/) allows anyone — be it your development team or your end consumers — to visualize and interact with the API’s resources without having any of the implementation logic in place. It’s automatically generated from your OpenAPI (formerly known as Swagger) Specification, with the visual documentation making it easy for back end implementation and client side consumption.
 
-## General
-**👉🏼 Want to score an easy open-source contribution?** Check out our [Good first issue](https://github.com/swagger-api/swagger-ui/issues?q=is%3Aissue+is%3Aopen+label%3A%22Good+first+issue%22) label.
-
-**🕰️ Looking for the older version of Swagger UI?** Refer to the [*2.x* branch](https://github.com/swagger-api/swagger-ui/tree/2.x).
-
-
-This repository publishes three different NPM modules:
-
-* [swagger-ui](https://www.npmjs.com/package/swagger-ui) is a traditional npm module intended for use in single-page applications that are capable of resolving dependencies (via Webpack, Browserify, etc.).
-* [swagger-ui-dist](https://www.npmjs.com/package/swagger-ui-dist) is a dependency-free module that includes everything you need to serve Swagger UI in a server-side project, or a single-page application that can't resolve npm module dependencies.
-* [swagger-ui-react](https://www.npmjs.com/package/swagger-ui-react) is Swagger UI packaged as a React component for use in React applications.
-
-We strongly suggest that you use `swagger-ui` instead of `swagger-ui-dist` if you're building a single-page application, since `swagger-ui-dist` is significantly larger.
-
-If you are looking for plain ol' HTML/JS/CSS, [download the latest release](https://github.com/swagger-api/swagger-ui/releases/latest) and copy the contents of the `/dist` folder to your server.
-
+[Swagger UI](https://swagger.io/tools/swagger-ui/) allows anyone — be it your development team or your end consumers — to visualize and interact with the API's resources without having any of the implementation logic in place. It's automatically generated from your OpenAPI (formerly known as Swagger) Specification, with the visual documentation making it easy for back end implementation and client side consumption.
 
 ## Compatibility
 The OpenAPI Specification has undergone 5 revisions since initial creation in 2010.  Compatibility between Swagger UI and the OpenAPI Specification is as follows:
@@ -44,6 +20,41 @@ The OpenAPI Specification has undergone 5 revisions since initial creation in 20
 | 2.0.24             | 2014-09-12   | 1.1, 1.2                               | [tag v2.0.24](https://github.com/swagger-api/swagger-ui/tree/v2.0.24) |
 | 1.0.13             | 2013-03-08   | 1.1, 1.2                               | [tag v1.0.13](https://github.com/swagger-api/swagger-ui/tree/v1.0.13) |
 | 1.0.1              | 2011-10-11   | 1.0, 1.1                               | [tag v1.0.1](https://github.com/swagger-api/swagger-ui/tree/v1.0.1)   |
+
+## How to Use
+
+1. **Execute an API**: Navigate to the API you want to test. Click the "Execute" button to send the request and view the response.
+
+![Image 2: Executing an API](images/img-2.png)
+
+2. **Generate a Test**: After executing the API, click the "Generate Test" button next to the API endpoint.
+
+![Image 3: Generating a Test](images/img-3.png)
+
+3. **View Test Results**: The test results will be displayed at the bottom of the page. Click on the "View Tests" section to see the details of the generated test.
+
+![Image 4: Viewing Test Results](images/img-4.png)
+
+4. **Run the Test**: With the test results displayed, click the "Generate Test" button to run the test.
+
+![Image 5: Running a Test](images/img-5.png)
+
+By integrating the Kusho testing framework directly into the Swagger UI, API Sorcery provides a seamless way to test and interact with your APIs. The generated tests can be used for ongoing monitoring and validation of your API's behavior.
+
+## Features
+
+- **Integrated Testing**: Execute APIs and generate tests directly within the Swagger UI.
+- **Comprehensive Test Generation**: API Sorcery automatically creates comprehensive test cases based on the API specification.
+- **Test Execution**: Run the generated tests to validate your API's behavior and ensure it meets the expected requirements.
+- **Visual Feedback**: The test results are displayed in a clear and easy-to-understand format, providing valuable insights into your API's performance.
+
+## Getting Started
+
+To use API Sorcery, simply navigate to your Swagger UI and take advantage of the "Generate Test" functionality for each API endpoint. The tool will guide you through the process of testing your APIs and visualizing the results.
+
+![Image 1: API Sorcery in Swagger UI](images/img-1.png)
+
+For more information and support, please refer to the project's documentation or reach out to the development team.
 
 ## Anonymized analytics
 
